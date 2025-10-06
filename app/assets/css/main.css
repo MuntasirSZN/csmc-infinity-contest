@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@source "../content/**/*";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: Geist, serif;
+}
+
+code {
+  font-family: "Fira Code", monospace;
+}
