@@ -1,12 +1,25 @@
+import { fileURLToPath } from "node:url";
+import { includeIgnoreFile } from "@eslint/compat";
+import { globalIgnores } from "eslint/config";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import checkFile from "eslint-plugin-check-file";
-import oxlint from "eslint-plugin-oxlint";
-import withNuxt from "./.nuxt/eslint.config.mjs";
 import drizzle from "eslint-plugin-drizzle";
 import * as mdx from "eslint-plugin-mdx";
 import nodePlugin from "eslint-plugin-n";
+import oxlint from "eslint-plugin-oxlint";
 import vitest from "eslint-plugin-vitest";
+import withNuxt from "./.nuxt/eslint.config.mjs";
+
+const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
 
 export default withNuxt(
+  includeIgnoreFile(gitignorePath, "Imported .gitignore patterns"),
+  globalIgnores([
+    "specs/**/*",
+    ".specify/**/*",
+    ".opencode/**/*",
+    ".prettierrc*",
+  ]),
   {
     files: ["tests/**"],
     plugins: {
@@ -56,4 +69,5 @@ export default withNuxt(
     },
   },
   ...oxlint.buildFromOxlintConfigFile("./.oxlintrc.json"),
+  eslintConfigPrettier,
 );

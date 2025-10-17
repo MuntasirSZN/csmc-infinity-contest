@@ -26,3 +26,24 @@ logs
 
 # Opencode
 !AGENTS.md
+
+# Test coverage
+coverage
+coverage/
+
+# Build outputs and temp
+npm-debug.log*
+.yarn-integrity
+.pnp.*
+.sass-cache
+.tmp
+.idea/
+.vscode/
+
+# Generated files
+dist/
+build/
+
+# OS
+Thumbs.db
+ehthumbs.db

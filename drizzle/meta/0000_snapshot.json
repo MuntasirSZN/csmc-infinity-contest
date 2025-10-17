@@ -1,0 +1,285 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "123f3cbc-62f7-41c2-8af3-bf33c7f07761",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "contestants": {
+      "name": "contestants",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "institute": {
+          "name": "institute",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "class": {
+          "name": "class",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "section": {
+          "name": "section",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "roll": {
+          "name": "roll",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mobile": {
+          "name": "mobile",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "father_name": {
+          "name": "father_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mother_name": {
+          "name": "mother_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "contestants_email_unique": {
+          "name": "contestants_email_unique",
+          "columns": ["email"],
+          "isUnique": true
+        },
+        "contestants_mobile_unique": {
+          "name": "contestants_mobile_unique",
+          "columns": ["mobile"],
+          "isUnique": true
+        },
+        "contestants_username_unique": {
+          "name": "contestants_username_unique",
+          "columns": ["username"],
+          "isUnique": true
+        },
+        "idx_contestants_email": {
+          "name": "idx_contestants_email",
+          "columns": ["email"],
+          "isUnique": false
+        },
+        "idx_contestants_mobile": {
+          "name": "idx_contestants_mobile",
+          "columns": ["mobile"],
+          "isUnique": false
+        },
+        "idx_contestants_username": {
+          "name": "idx_contestants_username",
+          "columns": ["username"],
+          "isUnique": false
+        },
+        "idx_contestants_category": {
+          "name": "idx_contestants_category",
+          "columns": ["category"],
+          "isUnique": false
+        },
+        "idx_contestants_created_at": {
+          "name": "idx_contestants_created_at",
+          "columns": ["created_at"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "ck_contestants_class": {
+          "name": "ck_contestants_class",
+          "value": "class BETWEEN 5 AND 10"
+        },
+        "ck_contestants_roll": {
+          "name": "ck_contestants_roll",
+          "value": "roll > 0"
+        },
+        "ck_contestants_mobile": {
+          "name": "ck_contestants_mobile",
+          "value": "mobile LIKE '01%' AND LENGTH(mobile) = 11"
+        }
+      }
+    },
+    "device_registrations": {
+      "name": "device_registrations",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "device_fingerprint": {
+          "name": "device_fingerprint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contestant_id": {
+          "name": "contestant_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "device_registrations_device_fingerprint_unique": {
+          "name": "device_registrations_device_fingerprint_unique",
+          "columns": ["device_fingerprint"],
+          "isUnique": true
+        },
+        "idx_device_registrations_fingerprint": {
+          "name": "idx_device_registrations_fingerprint",
+          "columns": ["device_fingerprint"],
+          "isUnique": false
+        },
+        "idx_device_registrations_contestant_id": {
+          "name": "idx_device_registrations_contestant_id",
+          "columns": ["contestant_id"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "device_registrations_contestant_id_contestants_id_fk": {
+          "name": "device_registrations_contestant_id_contestants_id_fk",
+          "tableFrom": "device_registrations",
+          "tableTo": "contestants",
+          "columnsFrom": ["contestant_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "username_sequences": {
+      "name": "username_sequences",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "current_number": {
+          "name": "current_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "ck_username_sequences_current_number": {
+          "name": "ck_username_sequences_current_number",
+          "value": "current_number >= 0 AND current_number <= 9999"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

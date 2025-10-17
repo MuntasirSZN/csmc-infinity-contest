@@ -127,5 +127,5 @@
     "builtin": true
   },
   "globals": {},
-  "ignorePatterns": []
+  "ignorePatterns": ["specs/**/*"]
 }
