@@ -9,6 +9,12 @@ export const gradeSchema = z.union([
   z.literal(10),
 ]);
 
+export const categorySchema = z.union([
+  z.literal("Primary"),
+  z.literal("Junior"),
+  z.literal("Senior"),
+]);
+
 const nameSchema = (fieldName: string, min = 2, max = 100) =>
   z
     .string()
@@ -46,3 +52,49 @@ export const registrationRequestSchema = z.object({
 export const checkReturningVisitorRequestSchema = z.object({
   deviceFingerprint: z.string().min(1).max(255),
 });
+
+export const usernameSequenceSchema = z.object({
+  category: z.union([z.literal("P"), z.literal("J"), z.literal("S")]),
+  currentNumber: z.number().int(),
+  updatedAt: z.number(),
+});
+
+export const validationDetailSchema = z.object({
+  field: z.string(),
+  issue: z.string(),
+});
+
+export const apiErrorSchema = z.object({
+  message: z.string(),
+  code: z.string(),
+  details: z.array(validationDetailSchema).optional(),
+  existingUsername: z.string().optional(),
+});
+
+export const apiResponseSchema = <T extends z.ZodTypeAny>(schema: T) =>
+  z.object({
+    success: z.boolean(),
+    data: schema.optional(),
+    error: apiErrorSchema.optional(),
+  });
+
+export const categoryCodeSchema = z.union([
+  z.literal("P"),
+  z.literal("J"),
+  z.literal("S"),
+]);
+
+export const registrationResponseSchema = z.object({
+  username: z.string(),
+  category: categorySchema,
+  fullName: z.string(),
+  mobile: z.string(),
+  email: z.string(),
+  grade: gradeSchema,
+  schoolName: z.string(),
+  registeredAt: z.string(),
+});
+
+export const registrationApiResponseSchema = apiResponseSchema(
+  registrationResponseSchema,
+);

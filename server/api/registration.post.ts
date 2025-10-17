@@ -28,30 +28,6 @@ function errorResponse(
   };
 }
 
-async function checkDuplicate(field: "email" | "mobile", value: string) {
-  const column = field === "email" ? contestants.email : contestants.mobile;
-  const existing = await db
-    .select()
-    .from(contestants)
-    .where(eq(column, value))
-    .limit(1);
-
-  if (existing.length > 0) {
-    return {
-      isDuplicate: true,
-      username: existing[0]?.username ?? null,
-      message: `${field.charAt(0).toUpperCase() + field.slice(1)} already registered`,
-      code: `DUPLICATE_${field.toUpperCase()}`,
-    };
-  }
-  return {
-    isDuplicate: false,
-    username: null,
-    message: "",
-    code: "",
-  };
-}
-
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
@@ -74,18 +50,38 @@ export default defineEventHandler(async (event) => {
 
     const data = parse.data as RegistrationRequest;
 
-    const emailCheck = await checkDuplicate("email", data.email);
-    if (emailCheck.isDuplicate) {
-      return errorResponse(event, 409, emailCheck.message, emailCheck.code, {
-        existingUsername: emailCheck.username,
-      });
+    const emailColumn = contestants.email;
+    const emailExisting = await db
+      .select()
+      .from(contestants)
+      .where(eq(emailColumn, data.email))
+      .limit(1);
+
+    if (emailExisting.length > 0) {
+      return errorResponse(
+        event,
+        409,
+        "Email already registered",
+        "DUPLICATE_EMAIL",
+        { existingUsername: emailExisting[0]?.username ?? null },
+      );
     }
 
-    const mobileCheck = await checkDuplicate("mobile", data.mobile);
-    if (mobileCheck.isDuplicate) {
-      return errorResponse(event, 409, mobileCheck.message, mobileCheck.code, {
-        existingUsername: mobileCheck.username,
-      });
+    const mobileColumn = contestants.mobile;
+    const mobileExisting = await db
+      .select()
+      .from(contestants)
+      .where(eq(mobileColumn, data.mobile))
+      .limit(1);
+
+    if (mobileExisting.length > 0) {
+      return errorResponse(
+        event,
+        409,
+        "Mobile already registered",
+        "DUPLICATE_MOBILE",
+        { existingUsername: mobileExisting[0]?.username ?? null },
+      );
     }
 
     const category = deriveCategory(data.grade);
@@ -159,7 +155,7 @@ export default defineEventHandler(async (event) => {
           schoolName: data.schoolName,
           registeredAt,
         },
-      };
+      } as RegistrationApiResponse;
     } catch (err) {
       consola.error("Database insert failed", err);
       return errorResponse(event, 500, "Database error", "DATABASE_ERROR");

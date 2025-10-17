@@ -1,8 +1,6 @@
 import { db } from "@@/server/database/client";
 import { usernameSequences } from "@@/server/database/schema";
 import { eq, sql } from "drizzle-orm";
-import type { Category } from "./category";
-import { formatUsername, getCategoryCode } from "./category";
 
 export async function generateUsername(category: Category): Promise<string> {
   const code = getCategoryCode(category);

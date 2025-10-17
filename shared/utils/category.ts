@@ -1,8 +1,9 @@
-export type Category = "Primary" | "Junior" | "Senior";
-export type CategoryCode = "P" | "J" | "S";
+import type { z } from "zod";
+import type { Category, CategoryCode } from "./types";
+import type { gradeSchema } from "./validation";
 
 export function deriveCategory(
-  grade: 5 | 6 | 7 | 8 | 9 | 10 | undefined,
+  grade: z.infer<typeof gradeSchema> | undefined,
 ): Category {
   if (grade === 5 || grade === 6) return "Primary";
   if (grade === 7 || grade === 8) return "Junior";

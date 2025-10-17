@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { registrationRequestSchema } from "@@/server/utils/validation";
 import type { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
-import type { RegistrationApiResponse } from "@/types/api";
 
 const emit = defineEmits<{
   success: [data: { username: string; fullName: string; category: string }];

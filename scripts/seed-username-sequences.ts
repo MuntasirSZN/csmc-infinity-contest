@@ -1,10 +1,10 @@
-import { db } from "../server/database/client";
-import { usernameSequences } from "../server/database/schema";
+import { db } from "@@/server/database/client";
+import { usernameSequences } from "@@/server/database/schema";
 
 async function seed() {
   const existing = await db.select().from(usernameSequences).all();
   if (existing.length > 0) {
-    console.log("username_sequences already seeded");
+    consola.log("username_sequences already seeded");
     return;
   }
 
@@ -16,12 +16,12 @@ async function seed() {
 
   for (const s of seeds) {
     await db.insert(usernameSequences).values(s).run();
-    console.log("Inserted", s.category);
+    consola.log("Inserted", s.category);
   }
-  console.log("Seeding complete");
+  consola.log("Seeding complete");
 }
 
 seed().catch((err) => {
-  console.error(err);
+  consola.error(err);
   process.exit(1);
 });
