@@ -9,7 +9,7 @@ const currentView = ref<"loader" | "form" | "success">("loader");
 const registrationData = ref<{
   username: string;
   fullName: string;
-  category: string;
+  category: Category;
 } | null>(null);
 
 onMounted(() => {
@@ -21,7 +21,7 @@ onMounted(() => {
 function handleSuccess(data: {
   username: string;
   fullName: string;
-  category: string;
+  category: Category;
 }) {
   registrationData.value = data;
   currentView.value = "success";

@@ -2,7 +2,7 @@
 defineProps<{
   username: string;
   fullName: string;
-  category: string;
+  category: Category;
 }>();
 </script>
 

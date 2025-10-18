@@ -1,5 +1,6 @@
-import { db } from "@@/server/database/client";
-import { usernameSequences } from "@@/server/database/schema";
+import { consola } from "consola";
+import { db } from "../server/database/client";
+import { usernameSequences } from "../server/database/schema";
 
 async function seed() {
   const existing = await db.select().from(usernameSequences).all();

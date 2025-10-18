@@ -3,7 +3,7 @@ import type { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 
 const emit = defineEmits<{
-  success: [data: { username: string; fullName: string; category: string }];
+  success: [data: { username: string; fullName: string; category: Category }];
 }>();
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
@@ -11,7 +11,7 @@ type FormSchema = z.output<typeof registrationRequestSchema>;
 const state = reactive<{
   fullName: string;
   schoolName: string;
-  grade: 5 | 6 | 7 | 8 | 9 | 10 | undefined;
+  grade: Grade | undefined;
   section: string;
   roll: string;
   email: string;

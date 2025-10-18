@@ -11,7 +11,7 @@ function toBase64Url(buf: Buffer) {
 type FingerprintFormat = "hex" | "base64url";
 
 /**
- * Generate a SHA-256 fingerprint from provided attributes.
+ * Generate an SHA-256 fingerprint from provided attributes.
  * - `format` defaults to `base64url` for compactness
  * - `length` if provided will truncate the result (characters)
  */

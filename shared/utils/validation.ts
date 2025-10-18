@@ -40,10 +40,7 @@ export const registrationRequestSchema = z.object({
     .min(1, "Section is required")
     .max(10, "Section must be short")
     .trim(),
-  roll: z.preprocess((val) => {
-    if (typeof val === "string" && val.trim() !== "") return Number(val);
-    return val;
-  }, z.number().int().positive()),
+  roll: z.coerce.number().int().positive(),
   fatherName: nameSchema("Father's name"),
   motherName: nameSchema("Mother's name"),
   deviceFingerprint: z.string().min(1).max(255),
