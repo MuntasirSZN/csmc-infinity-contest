@@ -21,7 +21,7 @@
 - API endpoints: `server/api/`
 - Database: `server/database/`
 
----
+______________________________________________________________________
 
 ## Phase 1: Setup (Shared Infrastructure)
 
@@ -33,7 +33,7 @@
 - [x] T004 [P] Create shared type definitions at server/utils/types.ts based on contracts/types.ts
 - [x] T005 Generate and apply database migrations using bun run db:generate
 
----
+______________________________________________________________________
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
@@ -50,7 +50,7 @@
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
----
+______________________________________________________________________
 
 ## Phase 3: User Story 1 - First-Time Registration Journey (Priority: P1) 🎯 MVP
 
@@ -60,29 +60,29 @@
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create registration loader component at app/components/registration-loader.vue with contest logo, branded spinner animation using line-md:loading-loop icon, and welcome message per FR-001
-- [ ] T013 [P] [US1] Create registration form component at app/components/registration-form.vue with all fields per FR-002: Name, Institute, Class (radio buttons 5-10), Section, Roll, Email, Mobile, Father's Name, Mother's Name
-- [ ] T014 [US1] Add computed category property in registration-form.vue that auto-derives from class selection per FR-003 (5-6→Primary, 7-8→Junior, 9-10→Senior)
-- [ ] T015 [US1] Integrate Nuxt UI Form component with Zod validation schema in registration-form.vue for inline error display per FR-012
-- [ ] T016 [US1] Add mobile number validation in registration-form.vue using regex pattern /^01\d{9}$/ per FR-004
-- [ ] T017 [US1] Add email validation in registration-form.vue per FR-005
-- [ ] T018 [US1] Add roll number validation in registration-form.vue for positive numeric values per FR-006
-- [ ] T019 [US1] Add keyboard navigation support and focus management in registration-form.vue per FR-015
-- [ ] T020 [US1] Add loading state and submit button disable logic in registration-form.vue per FR-016
-- [ ] T021 [US1] Create registration API endpoint at server/api/registration.post.ts implementing contract from contracts/api-registration.md
-- [ ] T022 [US1] Implement duplicate email/mobile check in server/api/registration.post.ts per FR-008
-- [ ] T023 [US1] Implement username generation transaction in server/api/registration.post.ts using username-generator.ts utility with retry logic per research.md section 9
-- [ ] T024 [US1] Implement contestant insertion in server/api/registration.post.ts with all form data and generated username
-- [ ] T025 [US1] Implement device registration insertion in server/api/registration.post.ts to store device fingerprint per data-model.md device_registrations table
-- [ ] T026 [US1] Create success message component at app/components/success-message.vue displaying username, TodoPlaceholder for rules, and TodoPlaceholder for program schedule per FR-009 and FR-017
-- [ ] T027 [US1] Create main index page at app/pages/index.vue orchestrating loader → form → success flow with state management
-- [ ] T028 [US1] Add prefers-reduced-motion support for loader animation in registration-loader.vue per constitution accessibility requirements
-- [ ] T029 [US1] Add SEO meta tags in app/pages/index.vue using useSeoMeta with title "Registration - CSMC Infinity Contest" per research.md section 10
-- [ ] T030 [US1] Add viewport meta tag with maximum-scale=1 in app.vue per plan.md constitution check line 48
+- [x] T012 [P] [US1] Create registration loader component at app/components/registration-loader.vue with contest logo, branded spinner animation using line-md:loading-loop icon, and welcome message per FR-001
+- [x] T013 [P] [US1] Create registration form component at app/components/registration-form.vue with all fields per FR-002: Name, Institute, Class (radio buttons 5-10), Section, Roll, Email, Mobile, Father's Name, Mother's Name
+- [x] T014 [US1] Add computed category property in registration-form.vue that auto-derives from class selection per FR-003 (5-6→Primary, 7-8→Junior, 9-10→Senior)
+- [x] T015 [US1] Integrate Nuxt UI Form component with Zod validation schema in registration-form.vue for inline error display per FR-012
+- [x] T016 [US1] Add mobile number validation in registration-form.vue using regex pattern /^01\\d{9}$/ per FR-004
+- [x] T017 [US1] Add email validation in registration-form.vue per FR-005
+- [x] T018 [US1] Add roll number validation in registration-form.vue for positive numeric values per FR-006
+- [x] T019 [US1] Add keyboard navigation support and focus management in registration-form.vue per FR-015
+- [x] T020 [US1] Add loading state and submit button disable logic in registration-form.vue per FR-016
+- [x] T021 [US1] Create registration API endpoint at server/api/registration.post.ts implementing contract from contracts/api-registration.md
+- [x] T022 [US1] Implement duplicate email/mobile check in server/api/registration.post.ts per FR-008
+- [x] T023 [US1] Implement username generation transaction in server/api/registration.post.ts using username-generator.ts utility with retry logic per research.md section 9
+- [x] T024 [US1] Implement contestant insertion in server/api/registration.post.ts with all form data and generated username
+- [x] T025 [US1] Implement device registration insertion in server/api/registration.post.ts to store device fingerprint per data-model.md device_registrations table
+- [x] T026 [US1] Create success message component at app/components/success-message.vue displaying username, TodoPlaceholder for rules, and TodoPlaceholder for program schedule per FR-009 and FR-017
+- [x] T027 [US1] Create main index page at app/pages/index.vue orchestrating loader → form → success flow with state management
+- [x] T028 [US1] Add prefers-reduced-motion support for loader animation in registration-loader.vue per constitution accessibility requirements
+- [x] T029 [US1] Add SEO meta tags in app/pages/index.vue using useSeoMeta with title "Registration - CSMC Infinity Contest" per research.md section 10
+- [x] T030 [US1] Add viewport meta tag with maximum-scale=1 in app.vue per plan.md constitution check line 48
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - new visitors can complete registration and receive a unique username
 
----
+______________________________________________________________________
 
 ## Phase 4: User Story 2 - Returning Visitor Recognition (Priority: P2)
 
@@ -103,7 +103,7 @@
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - new visitors can register, returning visitors see their success page immediately
 
----
+______________________________________________________________________
 
 ## Phase 5: User Story 3 - Form Validation and Error Handling (Priority: P2)
 
@@ -126,7 +126,7 @@
 
 **Checkpoint**: All user stories should now be independently functional - registration has robust validation and error handling with excellent UX
 
----
+______________________________________________________________________
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
@@ -147,7 +147,7 @@
 - [ ] T061 Run bun run build to verify production build succeeds
 - [ ] T062 Verify quickstart.md setup instructions are accurate by following them in a clean environment
 
----
+______________________________________________________________________
 
 ## Dependencies & Execution Order
 
@@ -182,7 +182,7 @@
 - **User Story 3**: T039, T040 can run in parallel (different files)
 - **Polish Phase**: Most tasks can run in parallel (different concerns)
 
----
+______________________________________________________________________
 
 ## Parallel Example: User Story 1
 
@@ -196,45 +196,45 @@ Task: "Create success message component at app/components/success-message.vue"
 Task: "Create main index page at app/pages/index.vue"
 ```
 
----
+______________________________________________________________________
 
 ## Implementation Strategy
 
 ### MVP First (User Story 1 Only)
 
 1. Complete Phase 1: Setup (5 tasks - database schema, validation, types)
-2. Complete Phase 2: Foundational (6 tasks - utilities, base components) - CRITICAL
-3. Complete Phase 3: User Story 1 (19 tasks - full registration flow)
-4. **STOP and VALIDATE**: Test User Story 1 independently
+1. Complete Phase 2: Foundational (6 tasks - utilities, base components) - CRITICAL
+1. Complete Phase 3: User Story 1 (19 tasks - full registration flow)
+1. **STOP and VALIDATE**: Test User Story 1 independently
    - New visitor can register successfully
    - Receives unique username (CSMC_P/J/S_XXXX format)
    - Sees success page with username
-5. Deploy/demo if ready
+1. Deploy/demo if ready
 
 **MVP Scope**: 30 tasks deliver complete first-time registration functionality
 
 ### Incremental Delivery
 
 1. Complete Setup + Foundational → Foundation ready (11 tasks)
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP with 30 tasks)
-3. Add User Story 2 → Test independently → Deploy/Demo (38 tasks total - returning visitor recognition)
-4. Add User Story 3 → Test independently → Deploy/Demo (48 tasks total - validation and error handling)
-5. Add Polish Phase → Production ready (62 tasks total)
+1. Add User Story 1 → Test independently → Deploy/Demo (MVP with 30 tasks)
+1. Add User Story 2 → Test independently → Deploy/Demo (38 tasks total - returning visitor recognition)
+1. Add User Story 3 → Test independently → Deploy/Demo (48 tasks total - validation and error handling)
+1. Add Polish Phase → Production ready (62 tasks total)
 
 ### Parallel Team Strategy
 
 With multiple developers:
 
 1. Team completes Setup + Foundational together (11 tasks)
-2. Once Foundational is done:
+1. Once Foundational is done:
    - Developer A: User Story 1 (19 tasks)
    - Developer B: User Story 2 (8 tasks) - lighter, but depends on US1 API existing
    - Developer C: User Story 3 (10 tasks) - enhances US1 validation
-3. Developer A finishes US1 first (MVP ready)
-4. Developers B & C complete US2 and US3 (full feature set)
-5. All developers: Polish phase together (14 tasks)
+1. Developer A finishes US1 first (MVP ready)
+1. Developers B & C complete US2 and US3 (full feature set)
+1. All developers: Polish phase together (14 tasks)
 
----
+______________________________________________________________________
 
 ## Task Count Summary
 
@@ -249,7 +249,7 @@ With multiple developers:
 **MVP Tasks**: 30 (Setup + Foundational + US1)
 **Parallel Opportunities**: 18 tasks marked with [P]
 
----
+______________________________________________________________________
 
 ## Notes
 

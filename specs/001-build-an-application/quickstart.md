@@ -226,8 +226,8 @@ csmc-infinity-contest/
 ### Tables
 
 1. **contestants**: Registration data (14 columns)
-2. **username_sequences**: Atomic username generation (3 columns)
-3. **device_registrations**: Returning visitor detection (4 columns)
+1. **username_sequences**: Atomic username generation (3 columns)
+1. **device_registrations**: Returning visitor detection (4 columns)
 
 ### Indexes
 
@@ -282,7 +282,7 @@ PORT=3001 bun run dev
 Pre-commit runs:
 
 1. Commitlint (conventional commits)
-2. Lint-staged (ESLint, Stylelint, Biome)
+1. Lint-staged (ESLint, Stylelint, Biome)
 
 Fix issues before committing:
 
@@ -294,9 +294,9 @@ bun run fmt
 ## Next Steps
 
 1. Review feature spec: `specs/001-build-an-application/spec.md`
-2. Read API contracts: `specs/001-build-an-application/contracts/`
-3. Check data model: `specs/001-build-an-application/data-model.md`
-4. Start implementing (tasks.md will be generated next)
+1. Read API contracts: `specs/001-build-an-application/contracts/`
+1. Check data model: `specs/001-build-an-application/data-model.md`
+1. Start implementing (tasks.md will be generated next)
 
 ## Support
 

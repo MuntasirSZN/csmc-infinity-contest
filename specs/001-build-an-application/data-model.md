@@ -1,7 +1,7 @@
 # Data Model
 
-**Feature**: CSMC Infinity Contest Registration System  
-**Date**: 2025-10-15  
+**Feature**: CSMC Infinity Contest Registration System\
+**Date**: 2025-10-15\
 **Status**: Complete
 
 ## Overview
@@ -100,7 +100,7 @@ Stores all registered contestant information.
 - Roll: Positive integer
 - Category: Must match class mapping
 
----
+______________________________________________________________________
 
 ### 2. `username_sequences`
 
@@ -108,11 +108,11 @@ Tracks the current sequence number for username generation per category.
 
 **Columns**:
 
-| Column           | Type    | Constraints                                                                 | Description              |
-| ---------------- | ------- | --------------------------------------------------------------------------- | ------------------------ |
-| `category`       | TEXT    | PRIMARY KEY, CHECK (category IN ('P', 'J', 'S'))                            | Category letter (P/J/S)  |
-| `current_number` | INTEGER | NOT NULL, DEFAULT 0, CHECK (current_number >= 0 AND current_number <= 9999) | Current sequence counter |
-| `updated_at`     | INTEGER | NOT NULL, DEFAULT (unixepoch())                                             | Last increment timestamp |
+| Column           | Type    | Constraints                                                                  | Description              |
+| ---------------- | ------- | ---------------------------------------------------------------------------- | ------------------------ |
+| `category`       | TEXT    | PRIMARY KEY, CHECK (category IN ('P', 'J', 'S'))                             | Category letter (P/J/S)  |
+| `current_number` | INTEGER | NOT NULL, DEFAULT 0, CHECK (current_number >= 0 AND current_number \<= 9999) | Current sequence counter |
+| `updated_at`     | INTEGER | NOT NULL, DEFAULT (unixepoch())                                              | Last increment timestamp |
 
 **Initial Data** (seed required):
 
@@ -141,7 +141,7 @@ WHERE category = 'P'
 RETURNING current_number;
 ```
 
----
+______________________________________________________________________
 
 ### 3. `device_registrations`
 
@@ -180,7 +180,7 @@ const fingerprint = await hash(
 );
 ```
 
----
+______________________________________________________________________
 
 ## Relationships
 
@@ -191,7 +191,7 @@ const fingerprint = await hash(
 - **Referential Integrity**: `ON DELETE CASCADE` (if contestant deleted, remove device registration)
 - **Rationale**: Separate table allows querying device status without joining full contestant data
 
----
+______________________________________________________________________
 
 ## Drizzle ORM Schema
 
@@ -279,7 +279,7 @@ export const deviceRegistrations = sqliteTable(
 );
 ```
 
----
+______________________________________________________________________
 
 ## Migrations
 
@@ -345,7 +345,7 @@ bun run drizzle-kit generate --schema=server/database/schema.ts
 bun run drizzle-kit migrate
 ```
 
----
+______________________________________________________________________
 
 ## Data Validation Summary
 
@@ -363,7 +363,7 @@ bun run drizzle-kit migrate
 | category   | Auto-derived, match class | Internal validation (not shown to user)                                       |
 | username   | Auto-generated            | N/A (system-generated)                                                        |
 
----
+______________________________________________________________________
 
 ## Query Patterns
 
@@ -437,27 +437,29 @@ const registration = await db
 	.limit(1);
 ```
 
----
+______________________________________________________________________
 
 ## Performance Considerations
 
 1. **Indexes**: All unique constraints automatically indexed; additional indexes on frequently queried columns (email, mobile, username, category, created_at)
 
-2. **Transaction Isolation**: Use serializable isolation level for username generation to prevent race conditions
+1. **Transaction Isolation**: Use serializable isolation level for username generation to prevent race conditions
 
-3. **Connection Pooling**: Turso client handles pooling automatically; configure max connections based on expected concurrent load
+1. **Connection Pooling**: Turso client handles pooling automatically; configure max connections based on expected concurrent load
 
-4. **Query Optimization**:
+1. **Query Optimization**:
+
    - Use `LIMIT 1` for existence checks
    - Avoid `SELECT *` in production queries
    - Use prepared statements (Drizzle handles automatically)
 
-5. **Scalability**:
+1. **Scalability**:
+
    - Current schema supports 29,997 total registrations (9,999 per category)
    - If limit reached, add new category or migrate to 5-digit sequence
    - Turso replication provides read scaling
 
----
+______________________________________________________________________
 
 ## Data Model Validation
 

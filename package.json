@@ -46,7 +46,7 @@
     "@prettier/plugin-oxc": "^0.0.4",
     "consola": "^3.4.2",
     "drizzle-kit": "^0.31.5",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-check-file": "^3.3.0",
     "eslint-plugin-drizzle": "^0.2.3",
@@ -54,7 +54,7 @@
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-oxlint": "^1.23.0",
     "eslint-plugin-vitest": "^0.5.4",
-    "happy-dom": "^20.0.4",
+    "happy-dom": "^20.0.5",
     "jiti": "^2.6.1",
     "lint-staged": "^16.2.4",
     "oxlint": "^1.23.0",
@@ -77,6 +77,13 @@
   "trustedDependencies": [
     "@parcel/watcher",
     "@tailwindcss/oxide",
-    "unrs-resolver"
-  ]
+    "esbuild",
+    "sharp",
+    "simple-git-hooks",
+    "unrs-resolver",
+    "vue-demi"
+  ],
+  "overrides": {
+    "sharp": "0.34.4"
+  }
 }

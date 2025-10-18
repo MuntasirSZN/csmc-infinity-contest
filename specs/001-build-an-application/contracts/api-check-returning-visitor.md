@@ -67,25 +67,25 @@ Check if a device has previously registered.
 ### Business Logic
 
 1. Validate deviceFingerprint
-2. Query `device_registrations` table for matching fingerprint
-3. If found, join with `contestants` table to retrieve registration details
-4. Return appropriate response based on whether registration exists
-5. **Privacy**: Do not expose mobile/email in response
+1. Query `device_registrations` table for matching fingerprint
+1. If found, join with `contestants` table to retrieve registration details
+1. Return appropriate response based on whether registration exists
+1. **Privacy**: Do not expose mobile/email in response
 
 ### Dual-Layer Detection Strategy
 
 This API works in conjunction with client-side localStorage:
 
 1. **Client checks localStorage** first (`csmc_registration_data`)
-2. **If localStorage empty**, call this API with device fingerprint
-3. **Server checks device_registrations** table
-4. **Result**: Combined coverage handles cleared localStorage and cross-browser scenarios
+1. **If localStorage empty**, call this API with device fingerprint
+1. **Server checks device_registrations** table
+1. **Result**: Combined coverage handles cleared localStorage and cross-browser scenarios
 
 ### Performance Targets
 
-- **p50**: <100ms
-- **p95**: <200ms
-- **p99**: <300ms
+- **p50**: \<100ms
+- **p95**: \<200ms
+- **p99**: \<300ms
 
 ### Rate Limiting
 

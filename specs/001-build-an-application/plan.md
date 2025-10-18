@@ -11,14 +11,14 @@ Build a registration system for CSMC Infinity Contest that captures student info
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.9+ with Vue 3.5, Nuxt 4.1  
-**Primary Dependencies**: Nuxt 4, Vue 3, Nuxt UI 4.0, Tailwind CSS, Drizzle ORM 0.44, @libsql/client 0.15, Zod 4.1, motion-v 1.7  
-**Storage**: Turso (libSQL) for contestant data with TURSO_DATABASE_URL and TURSO_AUTH_TOKEN  
-**Testing**: Vitest 3.2 with @nuxt/test-utils 3.19, Playwright 1.56 for E2E  
-**Target Platform**: Web (modern browsers: Chrome, Firefox, Safari, Edge latest 2 versions), SSR + hydration  
-**Project Type**: Web application (Nuxt SSR)  
-**Performance Goals**: <2s returning visitor page load, <500ms mutation response, <3min registration completion time, <5s loader transition on 4G  
-**Constraints**: <200ms form validation feedback, 100 concurrent registrations without username collision, mobile-first responsive design  
+**Language/Version**: TypeScript 5.9+ with Vue 3.5, Nuxt 4.1
+**Primary Dependencies**: Nuxt 4, Vue 3, Nuxt UI 4.0, Tailwind CSS, Drizzle ORM 0.44, @libsql/client 0.15, Zod 4.1, motion-v 1.7
+**Storage**: Turso (libSQL) for contestant data with TURSO_DATABASE_URL and TURSO_AUTH_TOKEN
+**Testing**: Vitest 3.2 with @nuxt/test-utils 3.19, Playwright 1.56 for E2E
+**Target Platform**: Web (modern browsers: Chrome, Firefox, Safari, Edge latest 2 versions), SSR + hydration
+**Project Type**: Web application (Nuxt SSR)
+**Performance Goals**: \<2s returning visitor page load, \<500ms mutation response, \<3min registration completion time, \<5s loader transition on 4G
+**Constraints**: \<200ms form validation feedback, 100 concurrent registrations without username collision, mobile-first responsive design
 **Scale/Scope**: Expected 100-500 initial registrations, single registration per device, 1 landing page + 1 form + 1 success page
 
 ## Constitution Check
@@ -41,7 +41,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 - Optimistic UI: form submission shows immediate loading state
 - Controlled input loops minimized (use `v-model` efficiently)
 - Image optimization via `@nuxt/image` for logos
-- Target mutations <500ms via efficient database queries
+- Target mutations \<500ms via efficient database queries
 
 ### III. Component Design Standards - ✅ PASS
 
@@ -77,7 +77,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 - Vitest for component tests (form validation, category derivation)
 - Playwright E2E for registration journey
-- Test validation feedback timing (<500ms)
+- Test validation feedback timing (\<500ms)
 - Test username uniqueness under concurrent load
 - Test returning visitor recognition
 - Honor `prefers-reduced-motion` for loader animation
@@ -101,10 +101,8 @@ specs/[###-feature]/
 ```
 app/
 ├── assets/
-│   ├── css/
-│   │   └── main.css              # Global styles
-│   ├── contest-logo.svg          # Contest logo (existing)
-│   └── csmc.webp                 # CSMC club logo (existing)
+│   └── css/
+│       └── main.css              # Global styles
 ├── components/
 │   ├── registration-form.vue     # Main form component
 │   ├── registration-loader.vue   # Branded loader
@@ -112,6 +110,9 @@ app/
 │   └── form-field.vue            # Reusable form field wrapper
 ├── pages/
 │   └── index.vue                 # Landing page (loader → form → success)
+├── public/
+│   ├── contest-logo.svg          # Contest logo (existing)
+│   └── csmc.webp                 # CSMC club logo (existing)
 ├── server/
 │   ├── api/
 │   │   └── registration.post.ts  # Registration endpoint

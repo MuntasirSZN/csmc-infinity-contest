@@ -39,16 +39,21 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
   - MUST: Visible focus rings (`:focus-visible`; group with `:focus-within`)
   - MUST: Manage focus (trap, move, and return) per APG patterns
 - Targets & input
-  - MUST: Hit target ≥24px (mobile ≥44px) If visual <24px, expand hit area
+  - MUST: Hit target ≥24px (mobile ≥44px) If visual \<24px, expand hit area
+
   - MUST: Mobile `<input>` font-size ≥16px or set:
+
     ```html
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
     />
     ```
+
   - NEVER: Disable browser zoom
+
   - MUST: `touch-action: manipulation` to prevent double-tap zoom; set `-webkit-tap-highlight-color` to match design
+
 - Inputs & forms (behavior)
   - MUST: Hydration-safe inputs (no lost focus/value)
   - NEVER: Block paste in `<input>/<textarea>`
@@ -113,7 +118,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - MUST: Tabular numbers for comparisons (`font-variant-numeric: tabular-nums` or a mono like Geist Mono)
 - MUST: Redundant status cues (not color-only); icons have text labels
 - MUST: Don’t ship the schema—visuals may omit labels but accessible names still exist
-- MUST: Use the ellipsis character `…` (not ``)
+- MUST: Use the ellipsis character `…` (not \`\`)
 - MUST: `scroll-margin-top` on headings for anchored links; include a “Skip to content” link; hierarchical `<h1–h6>`
 - MUST: Resilient to user-generated content (short/avg/very long)
 - MUST: Locale-aware dates/times/numbers/currency
@@ -130,7 +135,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - MUST: Track and minimize re-renders (React DevTools/React Scan)
 - MUST: Profile with CPU/network throttling
 - MUST: Batch layout reads/writes; avoid unnecessary reflows/repaints
-- MUST: Mutations (`POST/PATCH/DELETE`) target <500 ms
+- MUST: Mutations (`POST/PATCH/DELETE`) target \<500 ms
 - SHOULD: Prefer uncontrolled inputs; make controlled loops cheap (keystroke cost)
 - MUST: Virtualize large lists (eg, `virtua`)
 - MUST: Preload only above-the-fold images; lazy-load the rest

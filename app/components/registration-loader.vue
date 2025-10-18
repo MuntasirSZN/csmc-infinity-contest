@@ -26,8 +26,8 @@ const motionVariants = computed(() => {
     class="flex min-h-screen items-center justify-center p-4"
   >
     <div class="flex max-w-md flex-col items-center gap-6 text-center">
-      <img
-        src="@/assets/contest-logo.svg"
+      <NuxtImg
+        src="/contest-logo.svg"
         alt="CSMC Infinity Contest Logo"
         class="size-30 object-contain"
         width="120"

@@ -1,7 +1,7 @@
 # Research & Technical Decisions
 
-**Feature**: CSMC Infinity Contest Registration System  
-**Date**: 2025-10-15  
+**Feature**: CSMC Infinity Contest Registration System\
+**Date**: 2025-10-15\
 **Status**: Complete
 
 ## Overview
@@ -75,7 +75,7 @@ device_registrations:
 - Check constraint: `category IN ('Primary', 'Junior', 'Senior')`
 - Check constraint: `mobile LIKE '01%' AND LENGTH(mobile) = 11`
 
----
+______________________________________________________________________
 
 ## 2. Username Generation Strategy
 
@@ -84,11 +84,11 @@ device_registrations:
 **Chosen Approach**: Server-side generation using Drizzle ORM transaction
 
 1. Accept registration data
-2. Begin transaction
-3. Lock and increment `username_sequences.current_number` for category
-4. Generate username: `CSMC_{P|J|S}_{PADDED_NUMBER}`
-5. Insert contestant record with generated username
-6. Commit transaction
+1. Begin transaction
+1. Lock and increment `username_sequences.current_number` for category
+1. Generate username: `CSMC_{P|J|S}_{PADDED_NUMBER}`
+1. Insert contestant record with generated username
+1. Commit transaction
 
 **Rationale**:
 
@@ -119,7 +119,7 @@ await db.transaction(async (tx) => {
 });
 ```
 
----
+______________________________________________________________________
 
 ## 3. Form Validation Strategy
 
@@ -173,7 +173,7 @@ export type RegistrationInput = z.infer<typeof registrationSchema>;
 - Inline errors appear via `<UFormField>` wrapper
 - Form component handles focus management on validation errors
 
----
+______________________________________________________________________
 
 ## 4. Returning Visitor Detection
 
@@ -226,7 +226,7 @@ export const useReturningVisitor = () => {
 };
 ```
 
----
+______________________________________________________________________
 
 ## 5. Loader Animation Performance
 
@@ -262,7 +262,7 @@ export const useReturningVisitor = () => {
 		:leave="{ opacity: 0, scale: 1.05, transition: { duration: 300 } }"
 	>
 		<div class="loader">
-			<img src="@/assets/contest-logo.svg" alt="Contest Logo" />
+			<NuxtImg src="/contest-logo.svg" alt="Contest Logo" />
 			<UIcon name="line-md:loading-loop" class="animate-spin" />
 			<p>Welcome to the registration forum...</p>
 		</div>
@@ -278,7 +278,7 @@ export const useReturningVisitor = () => {
 </style>
 ```
 
----
+______________________________________________________________________
 
 ## 6. Mobile Number Validation (Bangladeshi Format)
 
@@ -319,7 +319,7 @@ export const mobileSchema = z
 	}, "Mobile number appears invalid");
 ```
 
----
+______________________________________________________________________
 
 ## 7. Category Auto-Derivation Logic
 
@@ -370,7 +370,7 @@ if (body.category !== derivedCategory) {
 }
 ```
 
----
+______________________________________________________________________
 
 ## 8. Placeholder Content Strategy
 
@@ -417,7 +417,7 @@ if (body.category !== derivedCategory) {
 </script>
 ```
 
----
+______________________________________________________________________
 
 ## 9. Concurrent Registration Handling
 
@@ -469,7 +469,7 @@ for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
 }
 ```
 
----
+______________________________________________________________________
 
 ## 10. SEO & Meta Tags
 
@@ -518,7 +518,7 @@ useSeoMeta({
 });
 ```
 
----
+______________________________________________________________________
 
 ## Summary of Technical Stack
 
@@ -556,50 +556,53 @@ useSeoMeta({
 - Environment variables: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
 - Static assets served via Nuxt Image optimization
 
----
+______________________________________________________________________
 
 ## Open Questions Resolved
 
 1. **How to prevent duplicate emails/mobile numbers?**
    → Unique constraints on database columns + error handling with user-friendly messages
 
-2. **What if localStorage is disabled?**
+1. **What if localStorage is disabled?**
    → Fall back to server-side fingerprint check; if both fail, allow re-registration (business decision: prioritize access over strict uniqueness)
 
-3. **Sponsor badge format?**
+1. **Sponsor badge format?**
    → TODO placeholder component; future phase will replace with actual image/logo component
 
-4. **Contest rules content source?**
+1. **Contest rules content source?**
    → TODO placeholder component; content team will provide markdown/structured data in future phase
 
-5. **Should we rate-limit registration submissions?**
+1. **Should we rate-limit registration submissions?**
    → Yes, implement basic rate limiting (10 requests/minute per IP) using Nuxt middleware
 
-6. **Offline form completion?**
+1. **Offline form completion?**
    → Not supported in MVP; show clear error message if submission fails due to network issue (per assumption: "Internet connectivity required")
 
----
+______________________________________________________________________
 
 ## Implementation Priority
 
 1. **Phase 1 (Core MVP)**:
+
    - Database schema + migrations
    - Registration form with validation
    - Username generation
    - Success page display
 
-2. **Phase 2 (Enhancements)**:
+1. **Phase 2 (Enhancements)**:
+
    - Returning visitor detection
    - Loader animation polish
    - Rate limiting
    - E2E tests
 
-3. **Phase 3 (Content Integration)**:
+1. **Phase 3 (Content Integration)**:
+
    - Replace TODO placeholders
    - Add actual contest rules
    - Add sponsor badges
    - Add program schedule
 
----
+______________________________________________________________________
 
 **Research Complete**: All technical unknowns resolved. Ready to proceed to Phase 1 (data model + contracts).

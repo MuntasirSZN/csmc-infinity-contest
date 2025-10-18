@@ -5,7 +5,6 @@
     "typescript",
     "node",
     "promise",
-    "vitest",
     "import",
     "jsdoc",
     "oxc"

@@ -1,7 +1,7 @@
 # Specification Quality Checklist: CSMC Infinity Contest Registration System
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning  
-**Created**: 2025-10-15  
+**Purpose**: Validate specification completeness and quality before proceeding to planning\
+**Created**: 2025-10-15\
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
