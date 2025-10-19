@@ -21,10 +21,6 @@ export default defineConfig({
               overrides: {
                 ogImage: { enabled: false },
               },
-              mock: {
-                intersectionObserver: true,
-                indexedDb: true,
-              },
             },
           },
         },

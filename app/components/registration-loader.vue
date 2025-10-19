@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { motion } from "motion-v";
 const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
 const motionVariants = computed(() => {
@@ -21,8 +22,8 @@ const motionVariants = computed(() => {
 </script>
 
 <template>
-  <div
-    v-motion="motionVariants"
+  <motion.div
+    :animate="motionVariants"
     class="flex min-h-screen items-center justify-center p-4"
   >
     <div class="flex max-w-md flex-col items-center gap-6 text-center">
@@ -46,5 +47,5 @@ const motionVariants = computed(() => {
       </h1>
       <p class="m-0 text-sm text-gray-500">Preparing your registration...</p>
     </div>
-  </div>
+  </motion.div>
 </template>
