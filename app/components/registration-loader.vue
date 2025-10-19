@@ -23,6 +23,7 @@ const motionVariants = computed(() => {
 
 <template>
   <motion.div
+    v-if="motionVariants"
     :animate="motionVariants"
     class="flex min-h-screen items-center justify-center p-4"
   >

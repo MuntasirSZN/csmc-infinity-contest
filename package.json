@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "bun run test --watch",
     "typecheck": "nuxt typecheck",
     "lint": "bun run lint:oxlint && bun run lint:eslint && bun run lint:stylelint",

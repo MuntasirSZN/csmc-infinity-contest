@@ -92,14 +92,14 @@ ______________________________________________________________________
 
 ### Implementation for User Story 2
 
-- [ ] T031 [P] [US2] Create check returning visitor API endpoint at server/api/registration/check.post.ts implementing contract from contracts/api-check-returning-visitor.md
-- [ ] T032 [US2] Implement device_registrations table query in server/api/registration/check.post.ts joining with contestants table per data-model.md query patterns
-- [ ] T033 [P] [US2] Create use-returning-visitor.ts composable at app/composables/use-returning-visitor.ts implementing dual-layer detection (localStorage + server fingerprint) per research.md section 4
-- [ ] T034 [US2] Implement localStorage check for csmc-registration key in use-returning-visitor.ts composable
-- [ ] T035 [US2] Implement server fingerprint check fallback in use-returning-visitor.ts calling /api/registration/check endpoint
-- [ ] T036 [US2] Integrate use-returning-visitor.ts composable in app/pages/index.vue to check registration status on page load
-- [ ] T037 [US2] Update app/pages/index.vue to conditionally skip loader and form, directly showing success page for returning visitors per FR-010 and FR-011
-- [ ] T038 [US2] Store registration data to localStorage in registration-form.vue after successful registration to enable instant recognition
+- [x] T031 [P] [US2] Create check returning visitor API endpoint at server/api/registration/check.post.ts implementing contract from contracts/api-check-returning-visitor.md
+- [x] T032 [US2] Implement device_registrations table query in server/api/registration/check.post.ts joining with contestants table per data-model.md query patterns
+- [x] T033 [P] [US2] Create use-returning-visitor.ts composable at app/composables/use-returning-visitor.ts implementing dual-layer detection (localStorage + server fingerprint) per research.md section 4
+- [x] T034 [US2] Implement localStorage check for csmc-registration key in use-returning-visitor.ts composable
+- [x] T035 [US2] Implement server fingerprint check fallback in use-returning-visitor.ts calling /api/registration/check endpoint
+- [x] T036 [US2] Integrate use-returning-visitor.ts composable in app/pages/index.vue to check registration status on page load
+- [x] T037 [US2] Update app/pages/index.vue to conditionally skip loader and form, directly showing success page for returning visitors per FR-010 and FR-011
+- [x] T038 [US2] Store registration data to localStorage in registration-form.vue after successful registration to enable instant recognition
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - new visitors can register, returning visitors see their success page immediately
 

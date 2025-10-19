@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import { deriveCategory } from "../../shared/utils/category";
 import type { Grade, RegistrationApiResponse } from "../../shared/utils/types";
 
-await setup();
+await setup({
+  host: "http://localhost:8787",
+});
 
 describe("User Story 1 - First-Time Registration Journey", () => {
   it("should complete registration flow with valid data and receive username", async () => {

@@ -12,19 +12,47 @@ const registrationData = ref<{
   category: Category;
 } | null>(null);
 
-onMounted(() => {
-  setTimeout(() => {
-    currentView.value = "form";
-  }, 2000);
+const { checkRegistration, saveRegistration } = useReturningVisitor();
+
+onMounted(async () => {
+  const existing = await checkRegistration();
+
+  if (existing) {
+    registrationData.value = {
+      username: existing.username,
+      fullName: existing.fullName,
+      category: existing.category,
+    };
+    currentView.value = "success";
+  } else {
+    setTimeout(() => {
+      currentView.value = "form";
+    }, 2000);
+  }
 });
 
 function handleSuccess(data: {
   username: string;
   fullName: string;
   category: Category;
+  grade: Grade;
+  schoolName: string;
+  mobile: string;
+  email: string;
 }) {
   registrationData.value = data;
   currentView.value = "success";
+
+  saveRegistration({
+    username: data.username,
+    category: data.category,
+    fullName: data.fullName,
+    mobile: data.mobile,
+    email: data.email,
+    grade: data.grade,
+    schoolName: data.schoolName,
+    registeredAt: new Date().toISOString(),
+  });
 }
 </script>
 

@@ -1,39 +1,30 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
-
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: lts
-
       - name: Install dependencies
         run: bun install
-
       - name: Run typecheck
         run: bun run typecheck
-
       - name: Run lint
         run: bun run lint
-
       - name: Run tests
-        run: bun run test
+        run: bun run ./scripts/test-with-dev-server.ts
         env:
           NODE_ENV: test
-
       - name: Build
         run: bun run build

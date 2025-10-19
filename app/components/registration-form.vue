@@ -3,7 +3,17 @@ import type { z } from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 
 const emit = defineEmits<{
-  success: [data: { username: string; fullName: string; category: Category }];
+  success: [
+    data: {
+      username: string;
+      fullName: string;
+      category: Category;
+      grade: Grade;
+      schoolName: string;
+      mobile: string;
+      email: string;
+    },
+  ];
 }>();
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
@@ -47,7 +57,17 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   errorMessage.value = null;
 
   try {
-    const deviceFingerprint = "temp-fingerprint";
+    const ua = navigator.userAgent;
+    const lang = navigator.language;
+    const screen = `${window.screen.width}x${window.screen.height}`;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const raw = `${ua}||${lang}||${screen}||${tz}`;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(raw);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+    const arr = Array.from(new Uint8Array(hash));
+    const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+    const deviceFingerprint = hex.slice(0, 32);
 
     const response = await $fetch<RegistrationApiResponse>(
       "/api/registration",
@@ -65,6 +85,10 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
         username: response.data.username,
         fullName: response.data.fullName,
         category: response.data.category,
+        grade: response.data.grade,
+        schoolName: response.data.schoolName,
+        mobile: response.data.mobile,
+        email: response.data.email,
       });
     }
   } catch (error: unknown) {
