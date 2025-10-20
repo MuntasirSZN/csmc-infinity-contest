@@ -67,7 +67,7 @@ const cardVariants = computed(() => {
           <UAlert
             color="warning"
             variant="soft"
-            icon="i-heroicons-exclamation-triangle"
+            icon="line-md:alert"
             title="Important"
             description="Please save your username. You will need it to participate in the contest."
             class="mb-6"
@@ -76,7 +76,7 @@ const cardVariants = computed(() => {
           <div class="space-y-4">
             <UCard>
               <div class="flex items-start gap-3">
-                <Icon name="i-heroicons-document-text" class="mt-1 text-primary" size="24" />
+                <Icon name="line-md:document" class="mt-1 text-primary" size="24" />
                 <div class="text-left">
                   <h3 class="font-semibold text-neutral-900 dark:text-neutral-100">Contest Rules</h3>
                   <p class="text-sm text-neutral-600 dark:text-neutral-400">
@@ -88,7 +88,7 @@ const cardVariants = computed(() => {
 
             <UCard>
               <div class="flex items-start gap-3">
-                <Icon name="i-heroicons-calendar" class="mt-1 text-primary" size="24" />
+                <Icon name="line-md:calendar" class="mt-1 text-primary" size="24" />
                 <div class="text-left">
                   <h3 class="font-semibold text-neutral-900 dark:text-neutral-100">Program Schedule</h3>
                   <p class="text-sm text-neutral-600 dark:text-neutral-400">

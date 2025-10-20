@@ -12,6 +12,13 @@ useSeoMeta({
     "Register for the CSMC Infinity Contest and receive your examination username",
 });
 
+defineOgImage({
+  component: "NuxtSeo",
+  title: "CSMC Infinity Contest",
+  description: "Register for the CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+  theme: "#06B6D4",
+});
+
 useSchemaOrg([
   {
     "@type": "Organization",

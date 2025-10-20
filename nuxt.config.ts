@@ -40,13 +40,7 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
   },
-  robots: {
-    enabled: true,
-  },
-  ogImage: {
-    enabled: true,
-  },
-  schemaOrg: {
-    enabled: true,
-  },
+  robots: {},
+  ogImage: {},
+  schemaOrg: {},
 });

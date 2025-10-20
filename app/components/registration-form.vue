@@ -135,7 +135,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             autocomplete="name"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-user"
+            icon="line-md:account"
           />
         </UFormGroup>
 
@@ -146,7 +146,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             autocomplete="organization"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-academic-cap"
+            icon="line-md:school"
           />
         </UFormGroup>
 
@@ -165,7 +165,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               placeholder="e.g., A"
               :disabled="loading"
               size="lg"
-              icon="i-heroicons-book-open"
+              icon="line-md:text-box"
             />
           </UFormGroup>
 
@@ -176,7 +176,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               placeholder="e.g., 123"
               :disabled="loading"
               size="lg"
-              icon="i-heroicons-hashtag"
+              icon="line-md:hash"
             />
           </UFormGroup>
         </div>
@@ -189,7 +189,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             autocomplete="email"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-envelope"
+            icon="line-md:email"
           />
         </UFormGroup>
 
@@ -201,7 +201,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             autocomplete="tel"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-phone"
+            icon="line-md:phone"
           />
         </UFormGroup>
 
@@ -211,7 +211,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             placeholder="Enter father's name"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-user"
+            icon="line-md:account"
           />
         </UFormGroup>
 
@@ -221,7 +221,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             placeholder="Enter mother's name"
             :disabled="loading"
             size="lg"
-            icon="i-heroicons-user"
+            icon="line-md:account"
           />
         </UFormGroup>
 
@@ -229,7 +229,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           v-if="errorMessage"
           color="error"
           variant="soft"
-          icon="i-heroicons-exclamation-circle"
+          icon="line-md:alert-circle"
           :title="errorMessage"
           class="mt-2"
         />
