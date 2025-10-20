@@ -3,7 +3,34 @@ useSeoMeta({
   title: "Registration - CSMC Infinity Contest",
   description:
     "Register for the CSMC Infinity Contest and receive your examination username",
+  ogTitle: "Registration - CSMC Infinity Contest",
+  ogDescription:
+    "Register for the CSMC Infinity Contest and receive your examination username. Join students from grades 5-10 in this exciting mathematical competition.",
+  ogType: "website",
+  twitterTitle: "Registration - CSMC Infinity Contest",
+  twitterDescription:
+    "Register for the CSMC Infinity Contest and receive your examination username",
 });
+
+useSchemaOrg([
+  {
+    "@type": "Organization",
+    name: "CSMC Infinity Contest",
+    url: "https://csmc-infinity-contest.vercel.app",
+    logo: "https://csmc-infinity-contest.vercel.app/contest-logo.svg",
+  },
+  {
+    "@type": "Event",
+    name: "CSMC Infinity Contest",
+    description: "CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    organizer: {
+      "@type": "Organization",
+      name: "CSMC",
+    },
+  },
+]);
 
 const currentView = ref<"loader" | "form" | "success">("loader");
 const registrationData = ref<{
@@ -57,7 +84,11 @@ function handleSuccess(data: {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div class="fixed right-4 top-4 z-50">
+      <ThemeSwitcher />
+    </div>
+
     <RegistrationLoader v-if="currentView === 'loader'" />
 
     <RegistrationForm

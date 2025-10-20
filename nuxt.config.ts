@@ -11,6 +11,11 @@ export default defineNuxtConfig({
     mode: "css",
     cssLayer: "base",
   },
+  colorMode: {
+    preference: "system",
+    fallback: "light",
+    classSuffix: "",
+  },
   css: ["@/assets/css/main.css"],
   modules: [
     "@nuxt/ui",
@@ -23,4 +28,25 @@ export default defineNuxtConfig({
     "@nuxt/test-utils/module",
     "nuxt-security",
   ],
+  site: {
+    url: "https://csmc-infinity-contest.vercel.app",
+    name: "CSMC Infinity Contest",
+    description: "Register for the CSMC Infinity Contest and receive your examination username",
+    defaultLocale: "en",
+  },
+  seo: {
+    redirectToCanonicalSiteUrl: true,
+  },
+  sitemap: {
+    strictNuxtContentPaths: true,
+  },
+  robots: {
+    enabled: true,
+  },
+  ogImage: {
+    enabled: true,
+  },
+  schemaOrg: {
+    enabled: true,
+  },
 });

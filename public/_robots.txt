@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://csmc-infinity-contest.vercel.app/sitemap.xml
