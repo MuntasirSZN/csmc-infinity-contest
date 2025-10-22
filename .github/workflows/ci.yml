@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,7 +23,7 @@ jobs:
       - name: Run lint
         run: bun run lint
       - name: Run tests
-        run: bun run ./scripts/test-with-dev-server.ts
+        run: bun run test
         env:
           NODE_ENV: test
       - name: Build
