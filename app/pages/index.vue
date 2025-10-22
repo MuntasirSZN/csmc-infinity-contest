@@ -46,6 +46,7 @@ const registrationData = ref<{
   fullName: string;
   category: Category;
 } | null>(null);
+const hasUnsavedChanges = ref(false);
 
 const { checkRegistration, saveRegistration } = useReturningVisitor();
 
@@ -64,6 +65,26 @@ onMounted(async () => {
       currentView.value = "form";
     }, 2000);
   }
+
+  if (import.meta.client) {
+    window.addEventListener("beforeunload", (event) => {
+      if (hasUnsavedChanges.value && currentView.value === "form") {
+        event.preventDefault();
+        event.returnValue = true;
+      }
+    });
+  }
+});
+
+onBeforeRouteLeave((_to, _from) => {
+  if (hasUnsavedChanges.value && currentView.value === "form") {
+    const answer = window.confirm(
+      "You have unsaved changes. Are you sure you want to leave?",
+    );
+    if (!answer) {
+      return false;
+    }
+  }
 });
 
 function handleSuccess(data: {
@@ -77,6 +98,7 @@ function handleSuccess(data: {
 }) {
   registrationData.value = data;
   currentView.value = "success";
+  hasUnsavedChanges.value = false;
 
   saveRegistration({
     username: data.username,
@@ -106,6 +128,7 @@ function handleSuccess(data: {
     <RegistrationForm
       v-else-if="currentView === 'form'"
       @success="handleSuccess"
+      @input="() => (hasUnsavedChanges = true)"
     />
 
     <SuccessMessage

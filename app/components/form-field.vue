@@ -9,7 +9,11 @@ defineProps<{
 
 <template>
   <div class="mb-3">
-    <label v-if="label" :for="id" class="mb-1.5 block font-semibold">
+    <label
+      v-if="label"
+      :for="id"
+      class="mb-1.5 block font-semibold text-neutral-900 dark:text-neutral-100"
+    >
       {{ label }}<span v-if="required" aria-hidden="true"> *</span>
     </label>
     <div class="block">
@@ -17,7 +21,7 @@ defineProps<{
     </div>
     <p
       v-if="error"
-      class="mt-1.5 text-[0.95rem] text-red-600"
+      class="mt-1.5 text-[0.95rem] text-red-600 dark:text-red-400"
       role="alert"
       aria-live="polite"
     >

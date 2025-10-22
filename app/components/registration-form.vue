@@ -14,6 +14,7 @@ const emit = defineEmits<{
       email: string;
     },
   ];
+  input: [];
 }>();
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
@@ -34,6 +35,7 @@ const state = reactive<{
 
 const loading = ref(false);
 const errorMessage = ref<string | null>(null);
+const showRetryButton = ref(false);
 
 onMounted(async () => {
   const ua = navigator.userAgent;
@@ -53,6 +55,7 @@ watch(
   state,
   (newState) => {
     registrationStore.$patch(newState);
+    emit("input");
   },
   { deep: true },
 );
@@ -69,6 +72,7 @@ const gradeOptions = [
 async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   loading.value = true;
   errorMessage.value = null;
+  showRetryButton.value = false;
 
   try {
     const response = await $fetch<RegistrationApiResponse>(
@@ -98,10 +102,20 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
       } else {
         errorMessage.value =
           "An error occurred during registration. Please try again.";
+        showRetryButton.value = true;
       }
     } else {
       errorMessage.value =
-        "An error occurred during registration. Please try again.";
+        "Network error occurred. Please check your connection and try again.";
+      showRetryButton.value = true;
+    }
+
+    const firstErrorField = document.querySelector(
+      '[role="alert"]',
+    ) as HTMLElement | null;
+    if (firstErrorField) {
+      firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstErrorField.focus({ preventScroll: true });
     }
   } finally {
     loading.value = false;
@@ -134,9 +148,11 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             v-model="state.fullName"
             placeholder="Enter your full name"
             autocomplete="name"
+            spellcheck="false"
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            @blur="state.fullName = state.fullName.trim()"
           />
         </UFormField>
 
@@ -148,6 +164,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:folder-settings-filled"
+            @blur="state.schoolName = state.schoolName.trim()"
           />
         </UFormField>
 
@@ -165,9 +182,11 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             <UInput
               v-model="state.section"
               placeholder="e.g., A"
+              spellcheck="false"
               :disabled="loading"
               size="lg"
               icon="line-md:text-box"
+              @blur="state.section = state.section.trim()"
             />
           </UFormField>
 
@@ -189,9 +208,11 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             type="email"
             placeholder="your.email@example.com"
             autocomplete="email"
+            spellcheck="false"
             :disabled="loading"
             size="lg"
             icon="line-md:email"
+            @blur="state.email = state.email.trim()"
           />
         </UFormField>
 
@@ -204,6 +225,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:phone"
+            @blur="state.mobile = state.mobile.trim()"
           />
         </UFormField>
 
@@ -211,9 +233,12 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           <UInput
             v-model="state.fatherName"
             placeholder="Enter father's name"
+            autocomplete="off"
+            spellcheck="false"
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            @blur="state.fatherName = state.fatherName.trim()"
           />
         </UFormField>
 
@@ -221,9 +246,12 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           <UInput
             v-model="state.motherName"
             placeholder="Enter mother's name"
+            autocomplete="off"
+            spellcheck="false"
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            @blur="state.motherName = state.motherName.trim()"
           />
         </UFormField>
 
@@ -234,7 +262,25 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           icon="line-md:alert-circle"
           :title="errorMessage"
           class="mt-2"
-        />
+        >
+          <template v-if="showRetryButton" #default>
+            <div class="mt-3 flex gap-2">
+              <UButton
+                size="sm"
+                color="gray"
+                variant="ghost"
+                @click="
+                  () => {
+                    errorMessage = null;
+                    showRetryButton = false;
+                  }
+                "
+              >
+                Dismiss
+              </UButton>
+            </div>
+          </template>
+        </UAlert>
 
         <UButton
           type="submit"

@@ -18,29 +18,36 @@ export const categorySchema = z.union([
 const nameSchema = (fieldName: string, min = 2, max = 100) =>
   z
     .string()
-    .min(min, `${fieldName} must be between ${min} and ${max} characters`)
-    .max(max, `${fieldName} must be between ${min} and ${max} characters`)
+    .min(1, `${fieldName} is required`)
+    .min(min, `${fieldName} must be at least ${min} characters long`)
+    .max(max, `${fieldName} must not exceed ${max} characters`)
     .trim();
 
 export const registrationRequestSchema = z.object({
   fullName: nameSchema("Name"),
   mobile: z
     .string()
+    .min(1, "Mobile number is required")
     .regex(
       /^01\d{9}$/,
-      "Please enter a valid Bangladeshi mobile number (11 digits starting with 01)",
+      "Mobile number must be 11 digits starting with 01 (e.g., 01712345678)",
     ),
   email: z
-    .email("Please enter a valid email address")
+    .string()
+    .min(1, "Email is required")
+    .email("Email must be a valid email address (e.g., your.email@example.com)")
     .transform((s) => s.toLowerCase()),
   grade: gradeSchema,
   schoolName: nameSchema("Institute name", 2, 200),
   section: z
     .string()
     .min(1, "Section is required")
-    .max(10, "Section must be short")
+    .max(10, "Section must be a single character (e.g., A, B, C)")
     .trim(),
-  roll: z.coerce.number().int().positive(),
+  roll: z.coerce
+    .number()
+    .int("Roll number must be a whole number")
+    .positive("Roll number must be greater than 0"),
   fatherName: nameSchema("Father's name"),
   motherName: nameSchema("Mother's name"),
   deviceFingerprint: z.string().min(1).max(255),
