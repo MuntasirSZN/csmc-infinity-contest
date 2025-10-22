@@ -1,77 +1,38 @@
-# Nuxt Minimal Starter
+1. Install node 22 or later and bun 1.2 or later.
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction)
-to learn more.
+1. Clone this repo:
 
-## Setup
+```sh
+git clone https://github.com/MuntasirSZN/csmc-infinity-contest.git
+```
 
-Make sure to install dependencies:
+1. Run the following command to install the required packages:
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
+```sh
 bun install
 ```
 
-## Development Server
+1. Start the development server:
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
+```sh
 bun run dev
 ```
 
-## Production
+> [!IMPORTANT]
+> Must run `bun run db:migrate` first time before starting the server. This adds the required tables and seed data to the database.
 
-Build the application for production:
+1. Run tests:
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```sh
+bun run test
 ```
 
-Locally preview production build:
+1. Open your browser and navigate to `http://localhost:3000` to view the application.
+1. Run `bun run build` to create a production build of the application.
+1. Run `bun preview` to preview the production build locally.
 
-```bash
-# npm
-npm run preview
+### Current status
 
-# pnpm
-pnpm preview
+Most of it is built, but instructions and others are not.
 
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment)
-for more information.
+This is not deployed right now.
