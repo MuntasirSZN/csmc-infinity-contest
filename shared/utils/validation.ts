@@ -26,11 +26,14 @@ export const registrationRequestSchema = z.object({
   fullName: nameSchema("Name"),
   mobile: z
     .string()
+    .trim()
     .regex(
       /^01\d{9}$/,
       "Please enter a valid Bangladeshi mobile number (11 digits starting with 01)",
     ),
   email: z
+    .string()
+    .trim()
     .email("Please enter a valid email address")
     .transform((s) => s.toLowerCase()),
   grade: gradeSchema,
@@ -40,7 +43,10 @@ export const registrationRequestSchema = z.object({
     .min(1, "Section is required")
     .max(10, "Section must be short")
     .trim(),
-  roll: z.coerce.number().int().positive(),
+  roll: z.coerce
+    .number()
+    .int()
+    .positive("Roll number must be a positive number"),
   fatherName: nameSchema("Father's name"),
   motherName: nameSchema("Mother's name"),
   deviceFingerprint: z.string().min(1).max(255),

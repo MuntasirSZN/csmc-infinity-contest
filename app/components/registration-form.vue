@@ -34,6 +34,8 @@ const state = reactive<{
 
 const loading = ref(false);
 const errorMessage = ref<string | null>(null);
+const retryCount = ref(0);
+const formRef = ref<HTMLFormElement>();
 
 onMounted(async () => {
   const ua = navigator.userAgent;
@@ -47,6 +49,12 @@ onMounted(async () => {
   const arr = Array.from(new Uint8Array(hash));
   const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
   state.deviceFingerprint = hex.slice(0, 32);
+
+  window.addEventListener("beforeunload", handleUnsavedChanges);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("beforeunload", handleUnsavedChanges);
 });
 
 watch(
@@ -65,6 +73,28 @@ const gradeOptions = [
   { value: 9, label: "9" } as const,
   { value: 10, label: "10" } as const,
 ];
+
+function handleUnsavedChanges(event: BeforeUnloadEvent) {
+  if (loading.value) {
+    event.preventDefault();
+    event.returnValue = "";
+  }
+}
+
+function focusFirstErrorField() {
+  if (!formRef.value) return;
+
+  nextTick(() => {
+    const inputs = formRef.value?.querySelectorAll(
+      "input[aria-invalid='true'], textarea[aria-invalid='true'], [data-invalid='true'] input, [data-invalid='true'] textarea",
+    );
+    if (inputs && inputs.length > 0) {
+      const firstError = inputs[0] as HTMLElement;
+      firstError.focus({ preventScroll: false });
+      firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+}
 
 async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   loading.value = true;
@@ -91,7 +121,14 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
       });
     }
   } catch (error: unknown) {
-    if (error && typeof error === "object" && "data" in error) {
+    const isNetworkError =
+      error instanceof Error && error.message?.includes("fetch");
+
+    if (isNetworkError) {
+      errorMessage.value =
+        "Network error. Please check your connection and try again.";
+      retryCount.value += 1;
+    } else if (error && typeof error === "object" && "data" in error) {
       const errorData = error.data as RegistrationApiResponse;
       if (errorData?.error?.message) {
         errorMessage.value = errorData.error.message;
@@ -99,6 +136,8 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
         errorMessage.value =
           "An error occurred during registration. Please try again.";
       }
+
+      focusFirstErrorField();
     } else {
       errorMessage.value =
         "An error occurred during registration. Please try again.";
@@ -124,6 +163,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
       </div>
 
       <UForm
+        ref="formRef"
         :schema="registrationRequestSchema"
         :state="state"
         class="flex flex-col gap-5"
@@ -137,6 +177,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            spellcheck="false"
+            aria-label="Full name"
+            aria-required="true"
           />
         </UFormField>
 
@@ -148,6 +191,8 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:folder-settings-filled"
+            aria-label="Institute name"
+            aria-required="true"
           />
         </UFormField>
 
@@ -157,6 +202,8 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :items="gradeOptions"
             :disabled="loading"
             orientation="horizontal"
+            aria-label="Class selection"
+            aria-required="true"
           />
         </UFormField>
 
@@ -168,6 +215,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               :disabled="loading"
               size="lg"
               icon="line-md:text-box"
+              aria-label="Section"
+              aria-required="true"
+              spellcheck="false"
             />
           </UFormField>
 
@@ -179,6 +229,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               :disabled="loading"
               size="lg"
               icon="line-md:hash"
+              aria-label="Roll number"
+              aria-required="true"
+              inputmode="numeric"
             />
           </UFormField>
         </div>
@@ -192,6 +245,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:email"
+            aria-label="Email address"
+            aria-required="true"
+            spellcheck="false"
           />
         </UFormField>
 
@@ -204,6 +260,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:phone"
+            aria-label="Mobile number (Bangladeshi format)"
+            aria-required="true"
+            inputmode="tel"
           />
         </UFormField>
 
@@ -214,6 +273,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            aria-label="Father's name"
+            aria-required="true"
+            spellcheck="false"
           />
         </UFormField>
 
@@ -224,6 +286,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             :disabled="loading"
             size="lg"
             icon="line-md:account"
+            aria-label="Mother's name"
+            aria-required="true"
+            spellcheck="false"
           />
         </UFormField>
 
@@ -233,7 +298,14 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           variant="soft"
           icon="line-md:alert-circle"
           :title="errorMessage"
+          :description="
+            retryCount > 0 && errorMessage.includes('Network')
+              ? `Network error occurred ${retryCount} time(s). Please try again.`
+              : undefined
+          "
           class="mt-2"
+          role="alert"
+          aria-live="assertive"
         />
 
         <UButton
@@ -243,6 +315,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
           :loading="loading"
           :disabled="loading"
           block
+          aria-label="Submit registration form"
         >
           {{ loading ? "Registering..." : "Register" }}
         </UButton>

@@ -72,10 +72,10 @@ bun run db:push
 The database needs initial sequence records:
 
 ```sql
-INSERT INTO username_sequences (category, current_sequence) VALUES
-  ('Primary', 0),
-  ('Junior', 0),
-  ('Senior', 0);
+INSERT INTO username_sequences (category, current_number) VALUES
+  ('P', 0),
+  ('J', 0),
+  ('S', 0);
 ```
 
 Run via Turso shell:
