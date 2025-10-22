@@ -10,11 +10,10 @@ export default defineNuxtConfig({
   icon: {
     mode: "css",
     cssLayer: "base",
-  },
-  colorMode: {
-    preference: "system",
-    fallback: "light",
-    classSuffix: "",
+    clientBundle: {
+      scan: true,
+    },
+    provider: "iconify",
   },
   css: ["@/assets/css/main.css"],
   modules: [
@@ -25,13 +24,15 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "motion-v/nuxt",
     "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
     "@nuxt/test-utils/module",
     "nuxt-security",
   ],
   site: {
     url: "https://csmc-infinity-contest.vercel.app",
     name: "CSMC Infinity Contest",
-    description: "Register for the CSMC Infinity Contest and receive your examination username",
+    description:
+      "Register for the CSMC Infinity Contest and receive your examination username",
     defaultLocale: "en",
   },
   seo: {
@@ -40,7 +41,7 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
   },
-  robots: {},
-  ogImage: {},
-  schemaOrg: {},
+  ogImage: {
+    fonts: ["Geist:400", "Geist:700"],
+  },
 });

@@ -4,8 +4,9 @@ export default defineAppConfig({
       primary: "cyan",
       neutral: "slate",
     },
-  },
-  colorMode: {
-    preference: "system",
+    icons: {
+      light: "line-md:moon-filled-alt-to-sunny-filled-loop-transition",
+      dark: "line-md:sunny-filled-loop-to-moon-filled-alt-loop-transition",
+    },
   },
 });

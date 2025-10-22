@@ -12,10 +12,10 @@ useSeoMeta({
     "Register for the CSMC Infinity Contest and receive your examination username",
 });
 
-defineOgImage({
-  component: "NuxtSeo",
+defineOgImageComponent("NuxtSeo", {
   title: "CSMC Infinity Contest",
-  description: "Register for the CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+  description:
+    "Register for the CSMC Infinity Contest - Mathematical Competition for grades 5-10",
   theme: "#06B6D4",
 });
 
@@ -29,7 +29,8 @@ useSchemaOrg([
   {
     "@type": "Event",
     name: "CSMC Infinity Contest",
-    description: "CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+    description:
+      "CSMC Infinity Contest - Mathematical Competition for grades 5-10",
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
     organizer: {
@@ -92,8 +93,12 @@ function handleSuccess(data: {
 
 <template>
   <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
-    <div class="fixed right-4 top-4 z-50">
-      <ThemeSwitcher />
+    <div class="fixed top-4 right-4 z-50">
+      <UColorModeButton>
+        <template #fallback>
+          <UButton loading variant="ghost" color="neutral" />
+        </template>
+      </UColorModeButton>
     </div>
 
     <RegistrationLoader v-if="currentView === 'loader'" />

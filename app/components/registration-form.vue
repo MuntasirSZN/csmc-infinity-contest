@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
 
+const registrationStore = useRegistrationStore();
 const state = reactive<{
   fullName: string;
   schoolName: string;
@@ -28,28 +29,41 @@ const state = reactive<{
   mobile: string;
   fatherName: string;
   motherName: string;
-}>({
-  fullName: "",
-  schoolName: "",
-  grade: undefined,
-  section: "",
-  roll: "",
-  email: "",
-  mobile: "",
-  fatherName: "",
-  motherName: "",
-});
+  deviceFingerprint: string;
+}>(registrationStore.$state);
 
 const loading = ref(false);
 const errorMessage = ref<string | null>(null);
 
+onMounted(async () => {
+  const ua = navigator.userAgent;
+  const lang = navigator.language;
+  const screen = `${window.screen.width}x${window.screen.height}`;
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const raw = `${ua}||${lang}||${screen}||${tz}`;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(raw);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  const arr = Array.from(new Uint8Array(hash));
+  const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+  state.deviceFingerprint = hex.slice(0, 32);
+});
+
+watch(
+  state,
+  (newState) => {
+    registrationStore.$patch(newState);
+  },
+  { deep: true },
+);
+
 const gradeOptions = [
-  { value: 5, label: "5" },
-  { value: 6, label: "6" },
-  { value: 7, label: "7" },
-  { value: 8, label: "8" },
-  { value: 9, label: "9" },
-  { value: 10, label: "10" },
+  { value: 5, label: "5" } as const,
+  { value: 6, label: "6" } as const,
+  { value: 7, label: "7" } as const,
+  { value: 8, label: "8" } as const,
+  { value: 9, label: "9" } as const,
+  { value: 10, label: "10" } as const,
 ];
 
 async function onSubmit(event: FormSubmitEvent<FormSchema>) {
@@ -57,26 +71,11 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   errorMessage.value = null;
 
   try {
-    const ua = navigator.userAgent;
-    const lang = navigator.language;
-    const screen = `${window.screen.width}x${window.screen.height}`;
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const raw = `${ua}||${lang}||${screen}||${tz}`;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(raw);
-    const hash = await crypto.subtle.digest("SHA-256", data);
-    const arr = Array.from(new Uint8Array(hash));
-    const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
-    const deviceFingerprint = hex.slice(0, 32);
-
     const response = await $fetch<RegistrationApiResponse>(
       "/api/registration",
       {
         method: "POST",
-        body: {
-          ...event.data,
-          deviceFingerprint,
-        },
+        body: event.data,
       },
     );
 
@@ -114,7 +113,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   <div class="mx-auto max-w-[600px] px-4 py-8">
     <UCard class="shadow-xl">
       <div class="mb-8 text-center">
-        <h2 class="mb-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+        <h2
+          class="mb-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100"
+        >
           Student Registration
         </h2>
         <p class="text-sm text-neutral-600 dark:text-neutral-400">
@@ -128,7 +129,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
         class="flex flex-col gap-5"
         @submit="onSubmit"
       >
-        <UFormGroup label="Name" name="fullName" required>
+        <UFormField label="Name" name="fullName" required>
           <UInput
             v-model="state.fullName"
             placeholder="Enter your full name"
@@ -137,29 +138,30 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             size="lg"
             icon="line-md:account"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Institute" name="schoolName" required>
+        <UFormField label="Institute" name="schoolName" required>
           <UInput
             v-model="state.schoolName"
             placeholder="Enter your school/college name"
             autocomplete="organization"
             :disabled="loading"
             size="lg"
-            icon="line-md:school"
+            icon="line-md:folder-settings-filled"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Class" name="grade" required>
+        <UFormField label="Class" name="grade" required>
           <URadioGroup
             v-model="state.grade"
-            :options="gradeOptions"
+            :items="gradeOptions"
             :disabled="loading"
+            orientation="horizontal"
           />
-        </UFormGroup>
+        </UFormField>
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <UFormGroup label="Section" name="section" required class="min-w-0">
+          <UFormField label="Section" name="section" required class="min-w-0">
             <UInput
               v-model="state.section"
               placeholder="e.g., A"
@@ -167,9 +169,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               size="lg"
               icon="line-md:text-box"
             />
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup label="Roll Number" name="roll" required class="min-w-0">
+          <UFormField label="Roll Number" name="roll" required class="min-w-0">
             <UInput
               v-model="state.roll"
               type="number"
@@ -178,10 +180,10 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
               size="lg"
               icon="line-md:hash"
             />
-          </UFormGroup>
+          </UFormField>
         </div>
 
-        <UFormGroup label="Email" name="email" required>
+        <UFormField label="Email" name="email" required>
           <UInput
             v-model="state.email"
             type="email"
@@ -191,9 +193,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             size="lg"
             icon="line-md:email"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Mobile Number" name="mobile" required>
+        <UFormField label="Mobile Number" name="mobile" required>
           <UInput
             v-model="state.mobile"
             type="tel"
@@ -203,9 +205,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             size="lg"
             icon="line-md:phone"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Father's Name" name="fatherName" required>
+        <UFormField label="Father's Name" name="fatherName" required>
           <UInput
             v-model="state.fatherName"
             placeholder="Enter father's name"
@@ -213,9 +215,9 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             size="lg"
             icon="line-md:account"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Mother's Name" name="motherName" required>
+        <UFormField label="Mother's Name" name="motherName" required>
           <UInput
             v-model="state.motherName"
             placeholder="Enter mother's name"
@@ -223,7 +225,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
             size="lg"
             icon="line-md:account"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UAlert
           v-if="errorMessage"
