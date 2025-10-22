@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
 
+const registrationStore = useRegistrationStore();
 const state = reactive<{
   fullName: string;
   schoolName: string;
@@ -28,28 +29,41 @@ const state = reactive<{
   mobile: string;
   fatherName: string;
   motherName: string;
-}>({
-  fullName: "",
-  schoolName: "",
-  grade: undefined,
-  section: "",
-  roll: "",
-  email: "",
-  mobile: "",
-  fatherName: "",
-  motherName: "",
-});
+  deviceFingerprint: string;
+}>(registrationStore.$state);
 
 const loading = ref(false);
 const errorMessage = ref<string | null>(null);
 
+onMounted(async () => {
+  const ua = navigator.userAgent;
+  const lang = navigator.language;
+  const screen = `${window.screen.width}x${window.screen.height}`;
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const raw = `${ua}||${lang}||${screen}||${tz}`;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(raw);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  const arr = Array.from(new Uint8Array(hash));
+  const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
+  state.deviceFingerprint = hex.slice(0, 32);
+});
+
+watch(
+  state,
+  (newState) => {
+    registrationStore.$patch(newState);
+  },
+  { deep: true },
+);
+
 const gradeOptions = [
-  { value: 5, label: "5" },
-  { value: 6, label: "6" },
-  { value: 7, label: "7" },
-  { value: 8, label: "8" },
-  { value: 9, label: "9" },
-  { value: 10, label: "10" },
+  { value: 5, label: "5" } as const,
+  { value: 6, label: "6" } as const,
+  { value: 7, label: "7" } as const,
+  { value: 8, label: "8" } as const,
+  { value: 9, label: "9" } as const,
+  { value: 10, label: "10" } as const,
 ];
 
 async function onSubmit(event: FormSubmitEvent<FormSchema>) {
@@ -57,26 +71,11 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
   errorMessage.value = null;
 
   try {
-    const ua = navigator.userAgent;
-    const lang = navigator.language;
-    const screen = `${window.screen.width}x${window.screen.height}`;
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const raw = `${ua}||${lang}||${screen}||${tz}`;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(raw);
-    const hash = await crypto.subtle.digest("SHA-256", data);
-    const arr = Array.from(new Uint8Array(hash));
-    const hex = arr.map((b) => b.toString(16).padStart(2, "0")).join("");
-    const deviceFingerprint = hex.slice(0, 32);
-
     const response = await $fetch<RegistrationApiResponse>(
       "/api/registration",
       {
         method: "POST",
-        body: {
-          ...event.data,
-          deviceFingerprint,
-        },
+        body: event.data,
       },
     );
 
@@ -112,128 +111,142 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
 
 <template>
   <div class="mx-auto max-w-[600px] px-4 py-8">
-    <div class="mb-8 text-center">
-      <h2 class="mb-2 text-3xl font-bold text-gray-800">
-        Student Registration
-      </h2>
-      <p class="text-sm text-gray-500">
-        Please fill in all fields to complete your registration
-      </p>
-    </div>
-
-    <UForm
-      :schema="registrationRequestSchema"
-      :state="state"
-      class="flex flex-col gap-5"
-      @submit="onSubmit"
-    >
-      <UFormGroup label="Name" name="fullName" required>
-        <UInput
-          v-model="state.fullName"
-          placeholder="Enter your full name"
-          autocomplete="name"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UFormGroup label="Institute" name="schoolName" required>
-        <UInput
-          v-model="state.schoolName"
-          placeholder="Enter your school/college name"
-          autocomplete="organization"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UFormGroup label="Class" name="grade" required>
-        <URadioGroup
-          v-model="state.grade"
-          :options="gradeOptions"
-          :disabled="loading"
-        />
-      </UFormGroup>
-
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <UFormGroup label="Section" name="section" required class="min-w-0">
-          <UInput
-            v-model="state.section"
-            placeholder="e.g., A"
-            :disabled="loading"
-            size="lg"
-          />
-        </UFormGroup>
-
-        <UFormGroup label="Roll Number" name="roll" required class="min-w-0">
-          <UInput
-            v-model="state.roll"
-            type="number"
-            placeholder="e.g., 123"
-            :disabled="loading"
-            size="lg"
-          />
-        </UFormGroup>
+    <UCard class="shadow-xl">
+      <div class="mb-8 text-center">
+        <h2
+          class="mb-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100"
+        >
+          Student Registration
+        </h2>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+          Please fill in all fields to complete your registration
+        </p>
       </div>
 
-      <UFormGroup label="Email" name="email" required>
-        <UInput
-          v-model="state.email"
-          type="email"
-          placeholder="your.email@example.com"
-          autocomplete="email"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UFormGroup label="Mobile Number" name="mobile" required>
-        <UInput
-          v-model="state.mobile"
-          type="tel"
-          placeholder="01712345678"
-          autocomplete="tel"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UFormGroup label="Father's Name" name="fatherName" required>
-        <UInput
-          v-model="state.fatherName"
-          placeholder="Enter father's name"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UFormGroup label="Mother's Name" name="motherName" required>
-        <UInput
-          v-model="state.motherName"
-          placeholder="Enter mother's name"
-          :disabled="loading"
-          size="lg"
-        />
-      </UFormGroup>
-
-      <UAlert
-        v-if="errorMessage"
-        color="error"
-        variant="soft"
-        :title="errorMessage"
-        class="mt-2"
-      />
-
-      <UButton
-        type="submit"
-        color="primary"
-        size="lg"
-        :loading="loading"
-        :disabled="loading"
-        block
+      <UForm
+        :schema="registrationRequestSchema"
+        :state="state"
+        class="flex flex-col gap-5"
+        @submit="onSubmit"
       >
-        {{ loading ? "Registering..." : "Register" }}
-      </UButton>
-    </UForm>
+        <UFormField label="Name" name="fullName" required>
+          <UInput
+            v-model="state.fullName"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:account"
+          />
+        </UFormField>
+
+        <UFormField label="Institute" name="schoolName" required>
+          <UInput
+            v-model="state.schoolName"
+            placeholder="Enter your school/college name"
+            autocomplete="organization"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:folder-settings-filled"
+          />
+        </UFormField>
+
+        <UFormField label="Class" name="grade" required>
+          <URadioGroup
+            v-model="state.grade"
+            :items="gradeOptions"
+            :disabled="loading"
+            orientation="horizontal"
+          />
+        </UFormField>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <UFormField label="Section" name="section" required class="min-w-0">
+            <UInput
+              v-model="state.section"
+              placeholder="e.g., A"
+              :disabled="loading"
+              size="lg"
+              icon="line-md:text-box"
+            />
+          </UFormField>
+
+          <UFormField label="Roll Number" name="roll" required class="min-w-0">
+            <UInput
+              v-model="state.roll"
+              type="number"
+              placeholder="e.g., 123"
+              :disabled="loading"
+              size="lg"
+              icon="line-md:hash"
+            />
+          </UFormField>
+        </div>
+
+        <UFormField label="Email" name="email" required>
+          <UInput
+            v-model="state.email"
+            type="email"
+            placeholder="your.email@example.com"
+            autocomplete="email"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:email"
+          />
+        </UFormField>
+
+        <UFormField label="Mobile Number" name="mobile" required>
+          <UInput
+            v-model="state.mobile"
+            type="tel"
+            placeholder="01712345678"
+            autocomplete="tel"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:phone"
+          />
+        </UFormField>
+
+        <UFormField label="Father's Name" name="fatherName" required>
+          <UInput
+            v-model="state.fatherName"
+            placeholder="Enter father's name"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:account"
+          />
+        </UFormField>
+
+        <UFormField label="Mother's Name" name="motherName" required>
+          <UInput
+            v-model="state.motherName"
+            placeholder="Enter mother's name"
+            :disabled="loading"
+            size="lg"
+            icon="line-md:account"
+          />
+        </UFormField>
+
+        <UAlert
+          v-if="errorMessage"
+          color="error"
+          variant="soft"
+          icon="line-md:alert-circle"
+          :title="errorMessage"
+          class="mt-2"
+        />
+
+        <UButton
+          type="submit"
+          color="primary"
+          size="lg"
+          :loading="loading"
+          :disabled="loading"
+          block
+        >
+          {{ loading ? "Registering..." : "Register" }}
+        </UButton>
+      </UForm>
+    </UCard>
   </div>
 </template>

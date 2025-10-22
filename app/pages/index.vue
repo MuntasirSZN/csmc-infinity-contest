@@ -3,7 +3,42 @@ useSeoMeta({
   title: "Registration - CSMC Infinity Contest",
   description:
     "Register for the CSMC Infinity Contest and receive your examination username",
+  ogTitle: "Registration - CSMC Infinity Contest",
+  ogDescription:
+    "Register for the CSMC Infinity Contest and receive your examination username. Join students from grades 5-10 in this exciting mathematical competition.",
+  ogType: "website",
+  twitterTitle: "Registration - CSMC Infinity Contest",
+  twitterDescription:
+    "Register for the CSMC Infinity Contest and receive your examination username",
 });
+
+defineOgImageComponent("NuxtSeo", {
+  title: "CSMC Infinity Contest",
+  description:
+    "Register for the CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+  theme: "#06B6D4",
+});
+
+useSchemaOrg([
+  {
+    "@type": "Organization",
+    name: "CSMC Infinity Contest",
+    url: "https://csmc-infinity-contest.vercel.app",
+    logo: "https://csmc-infinity-contest.vercel.app/contest-logo.svg",
+  },
+  {
+    "@type": "Event",
+    name: "CSMC Infinity Contest",
+    description:
+      "CSMC Infinity Contest - Mathematical Competition for grades 5-10",
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    organizer: {
+      "@type": "Organization",
+      name: "CSMC",
+    },
+  },
+]);
 
 const currentView = ref<"loader" | "form" | "success">("loader");
 const registrationData = ref<{
@@ -57,7 +92,15 @@ function handleSuccess(data: {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div class="fixed top-4 right-4 z-50">
+      <UColorModeButton>
+        <template #fallback>
+          <UButton loading variant="ghost" color="neutral" />
+        </template>
+      </UColorModeButton>
+    </div>
+
     <RegistrationLoader v-if="currentView === 'loader'" />
 
     <RegistrationForm
