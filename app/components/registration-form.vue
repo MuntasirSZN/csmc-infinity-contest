@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 type FormSchema = z.output<typeof registrationRequestSchema>;
 
+const schema = registrationRequestSchema;
 const registrationStore = useRegistrationStore();
 const state = reactive<{
   fullName: string;
@@ -164,7 +165,7 @@ async function onSubmit(event: FormSubmitEvent<FormSchema>) {
 
       <UForm
         ref="formRef"
-        :schema="registrationRequestSchema"
+        :schema="schema"
         :state="state"
         class="flex flex-col gap-5"
         @submit="onSubmit"
